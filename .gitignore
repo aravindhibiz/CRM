@@ -6,3 +6,9 @@ package-lock.json
 .vscode/
 .idea/
 vite.config.*s.*
+
+# gemini-cli settings
+.gemini/
+
+# GitHub App credentials
+gha-creds-*.json
