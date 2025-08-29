@@ -10,6 +10,7 @@ import DealForm from './components/DealForm';
 import ActivityTimeline from './components/ActivityTimeline';
 import DocumentsSection from './components/DocumentsSection';
 import DealActions from './components/DealActions';
+import DealsGridView from './components/DealsGridView';
 
 import dealsService from '../../services/dealsService';
 import contactsService from '../../services/contactsService';
@@ -33,6 +34,7 @@ const DealManagement = () => {
   // UI state
   const [showForm, setShowForm] = useState(false);
   const [isListView, setIsListView] = useState(true);
+  const [isGridView, setIsGridView] = useState(false);
   
   // Loading states
   const [isLoading, setIsLoading] = useState(true);
@@ -143,11 +145,13 @@ const DealManagement = () => {
     } catch (err) {
       console.error('Error loading deal:', err);
       
-      // Handle specific schema cache errors
-      if (err?.message?.includes('company') || err?.message?.includes('schema cache')) {
-        setError('Could not find the deal information. Please check your database connection and try refreshing the page.');
-      } else if (err?.message?.includes('not found') || err?.message?.includes('PGRST116')) {
+      // Handle specific error cases with more precise detection
+      if (err?.code === 'PGRST116' || err?.message?.includes('not found')) {
         setError('Deal not found. It may have been deleted or you may not have permission to view it.');
+      } else if (err?.message?.toLowerCase().includes('permission') || err?.message?.toLowerCase().includes('policy')) {
+        setError('Permission denied. You may not have access to view this deal.');
+      } else if (err?.message?.includes('company') || err?.message?.includes('schema cache')) {
+        setError('Could not load deal information. Please check your database connection and try refreshing the page.');
       } else {
         setError('Failed to load deal. Please try again.');
       }
@@ -368,17 +372,25 @@ const DealManagement = () => {
     } catch (err) {
       console.error('Error saving deal:', err);
       
-      // Handle specific error cases
-      if (err?.message?.includes('company') || err?.message?.includes('schema cache')) {
-        const errorMsg = 'There was an issue accessing company information. Please refresh the page and try again.';
+      // Handle specific error cases with more precise error detection
+      if (err?.code === '23503') { // Foreign key violation
+        const errorMsg = 'The selected company or contact is no longer available. Please refresh the page and select valid options.';
         setError(errorMsg);
         toast.error(errorMsg);
-      } else if (err?.message?.includes('not found')) {
+      } else if (err?.code === 'PGRST116' || err?.message?.includes('not found')) {
         const errorMsg = 'Deal not found. It may have been deleted by another user.';
         setError(errorMsg);
         toast.error(errorMsg);
         navigate('/deal-management');
         return;
+      } else if (err?.message?.toLowerCase().includes('permission') || err?.message?.toLowerCase().includes('policy')) {
+        const errorMsg = 'Permission denied. You may not have access to modify this deal.';
+        setError(errorMsg);
+        toast.error(errorMsg);
+      } else if (err?.message?.includes('company') || err?.message?.includes('schema cache')) {
+        const errorMsg = 'There was an issue accessing company information. Please refresh the page and try again.';
+        setError(errorMsg);
+        toast.error(errorMsg);
       } else {
         const errorMsg = err?.message || 'Failed to save deal. Please try again.';
         setError(errorMsg);
@@ -673,9 +685,36 @@ const DealManagement = () => {
                 <div className="p-6 border-b border-border">
                   <div className="flex items-center justify-between">
                     <h2 className="text-lg font-semibold text-text-primary">All Deals</h2>
-                    <div className="text-sm text-text-secondary">
-                      {filteredDeals.length} deal{filteredDeals.length !== 1 ? 's' : ''} 
-                      {selectedStageFilter !== 'all' && ` (${allDeals.length} total)`}
+                    <div className="flex items-center space-x-4">
+                      {/* View Toggle */}
+                      <div className="flex items-center bg-gray-100 rounded-lg p-1">
+                        <button
+                          onClick={() => setIsGridView(false)}
+                          className={`flex items-center space-x-1 px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
+                            !isGridView
+                              ? 'bg-white text-primary shadow-sm'
+                              : 'text-gray-600 hover:text-gray-900'
+                          }`}
+                        >
+                          <Icon name="List" size={16} />
+                          <span>List</span>
+                        </button>
+                        <button
+                          onClick={() => setIsGridView(true)}
+                          className={`flex items-center space-x-1 px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
+                            isGridView
+                              ? 'bg-white text-primary shadow-sm'
+                              : 'text-gray-600 hover:text-gray-900'
+                          }`}
+                        >
+                          <Icon name="Grid" size={16} />
+                          <span>Grid</span>
+                        </button>
+                      </div>
+                      <div className="text-sm text-text-secondary">
+                        {filteredDeals.length} deal{filteredDeals.length !== 1 ? 's' : ''} 
+                        {selectedStageFilter !== 'all' && ` (${allDeals.length} total)`}
+                      </div>
                     </div>
                   </div>
                   
@@ -737,6 +776,14 @@ const DealManagement = () => {
                         Create Deal
                       </button>
                     )}
+                  </div>
+                ) : isGridView ? (
+                  <div className="p-6">
+                    <DealsGridView
+                      deals={filteredDeals}
+                      stages={stages}
+                      onEditDeal={handleEditDeal}
+                    />
                   </div>
                 ) : (
                   <div className="overflow-x-auto">
