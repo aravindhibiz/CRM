@@ -210,7 +210,7 @@ export const dealsService = {
       
       for (let month = 0; month < 12; month++) {
         const monthKey = new Date(currentYear, month)?.toLocaleString('default', { month: 'short' });
-        monthlyData[monthKey] = { month: monthKey, forecast: 0, actual: 0 };
+        monthlyData[monthKey] = { month: monthKey, forecast: 0, actual: 0, target: 208333 };
       }
 
       data?.forEach(deal => {
@@ -257,6 +257,46 @@ export const dealsService = {
       };
     } catch (err) {
       console.error('Error fetching performance metrics:', err);
+      throw err;
+    }
+  },
+
+  // Get win rate data
+  async getWinRateData() {
+    try {
+      const { data: deals, error } = await supabase?.from('deals')?.select('stage, created_at');
+      
+      if (error) throw error;
+
+      // Group deals by month and calculate win rates
+      const monthlyWinRate = {};
+      const currentYear = new Date()?.getFullYear();
+      
+      for (let month = 0; month < 12; month++) {
+        const monthKey = new Date(currentYear, month)?.toLocaleString('default', { month: 'short' });
+        monthlyWinRate[monthKey] = { period: monthKey, won: 0, total: 0, winRate: 0 };
+      }
+
+      deals?.forEach(deal => {
+        const createdDate = new Date(deal?.created_at);
+        const monthKey = createdDate?.toLocaleString('default', { month: 'short' });
+        
+        if (monthlyWinRate?.[monthKey]) {
+          monthlyWinRate[monthKey].total += 1;
+          if (deal?.stage === 'closed_won') {
+            monthlyWinRate[monthKey].won += 1;
+          }
+        }
+      });
+
+      // Calculate win rates
+      Object.values(monthlyWinRate).forEach(month => {
+        month.winRate = month.total > 0 ? Math.round((month.won / month.total) * 100) : 0;
+      });
+
+      return Object.values(monthlyWinRate);
+    } catch (err) {
+      console.error('Error fetching win rate data:', err);
       throw err;
     }
   }
