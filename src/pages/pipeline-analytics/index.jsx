@@ -27,10 +27,12 @@ const PipelineAnalytics = () => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const [pipeline, revenue, performance] = await Promise.all([
+        // Fetch all analytics data from Supabase - no mock/stale data
+        const [pipeline, revenue, performance, winRate] = await Promise.all([
           dealsService.getPipelineDeals(),
           dealsService.getRevenueData(),
           dealsService.getPerformanceMetrics(),
+          dealsService.getWinRateData(),
         ]);
 
         // Transform pipeline data for funnel chart
@@ -47,6 +49,7 @@ const PipelineAnalytics = () => {
 
         setPipelineFunnelData(transformedPipeline);
         setRevenueTrendData(revenue);
+        setWinRateData(winRate);
         // For performance metrics, we need to adapt the structure to match the existing UI expectations
         // The getPerformanceMetrics returns: { quota, achieved, percentage, dealsWon, dealsLost, avgDealSize, conversionRate }
         // The UI expects velocityMetrics, territoryData, repPerformanceData
@@ -63,14 +66,26 @@ const PipelineAnalytics = () => {
           { metric: 'Deals Lost', value: performance.dealsLost, change: '', trend: 'down' },
         ]);
 
-        // Dummy territoryData and repPerformanceData for now, as dealsService doesn't provide this directly
-        // This would require additional service calls or data processing if needed from the DB.
+        // Use actual data from Supabase for territories and reps
+        // For now, we'll use the global data as a single territory/rep since we don't have separate territory/rep data in the DB yet
         setTerritoryData([
-          { name: 'Global', revenue: performance.achieved, deals: performance.dealsWon + performance.dealsLost, winRate: performance.conversionRate },
+          { 
+            name: 'Global Territory', 
+            revenue: performance.achieved, 
+            deals: performance.dealsWon + performance.dealsLost, 
+            winRate: performance.conversionRate,
+            avgDealSize: performance.avgDealSize
+          },
         ]);
 
         setRepPerformanceData([
-          { name: 'Current User', revenue: performance.achieved, deals: performance.dealsWon, quota: performance.quota, attainment: performance.percentage },
+          { 
+            name: 'Current User', 
+            revenue: performance.achieved, 
+            deals: performance.dealsWon, 
+            quota: performance.quota, 
+            attainment: performance.percentage 
+          },
         ]);
 
 
@@ -403,24 +418,24 @@ const PipelineAnalytics = () => {
                     <div className="space-y-4">
                       <div className="flex items-center justify-between">
                         <span className="text-sm text-text-secondary">Total Pipeline</span>
-                        <span className="text-lg font-normal text-text-primary">{formatCurrency(pipelineFunnelData.reduce((sum, stage) => sum + stage.value, 0))}</span>
+                        <span className="text-lg font-normal text-text-primary">{formatCurrency((pipelineFunnelData || []).reduce((sum, stage) => sum + (stage?.value || 0), 0))}</span>
                       </div>
                       <div className="flex items-center justify-between">
                         <span className="text-sm text-text-secondary">Weighted Pipeline</span>
-                        <span className="text-lg font-normal text-text-primary">{formatCurrency(pipelineFunnelData.reduce((sum, stage) => sum + (stage.value * (stage.name === 'Leads' ? 0.1 : stage.name === 'Qualified' ? 0.25 : stage.name === 'Proposal' ? 0.5 : stage.name === 'Negotiation' ? 0.75 : 1)), 0))}</span>
+                        <span className="text-lg font-normal text-text-primary">{formatCurrency((pipelineFunnelData || []).reduce((sum, stage) => sum + ((stage?.value || 0) * (stage?.name === 'Leads' ? 0.1 : stage?.name === 'Qualified' ? 0.25 : stage?.name === 'Proposal' ? 0.5 : stage?.name === 'Negotiation' ? 0.75 : 1)), 0))}</span>
                       </div>
                       <div className="flex items-center justify-between">
                         <span className="text-sm text-text-secondary">Best Case</span>
-                        <span className="text-lg font-normal text-success">{formatCurrency(pipelineFunnelData.reduce((sum, stage) => sum + stage.value, 0) * 1.1)}</span>
+                        <span className="text-lg font-normal text-success">{formatCurrency((pipelineFunnelData || []).reduce((sum, stage) => sum + (stage?.value || 0), 0) * 1.1)}</span>
                       </div>
                       <div className="flex items-center justify-between">
                         <span className="text-sm text-text-secondary">Worst Case</span>
-                        <span className="text-lg font-normal text-error">{formatCurrency(pipelineFunnelData.reduce((sum, stage) => sum + stage.value, 0) * 0.8)}</span>
+                        <span className="text-lg font-normal text-error">{formatCurrency((pipelineFunnelData || []).reduce((sum, stage) => sum + (stage?.value || 0), 0) * 0.8)}</span>
                       </div>
                       <div className="pt-4 border-t border-border">
                         <div className="flex items-center justify-between">
                           <span className="text-sm text-text-secondary">Coverage Ratio</span>
-                          <span className="text-lg font-normal text-primary">{(pipelineFunnelData.reduce((sum, stage) => sum + stage.value, 0) / (performanceMetrics?.quota || 1)).toFixed(1)}x</span>
+                          <span className="text-lg font-normal text-primary">{((pipelineFunnelData || []).reduce((sum, stage) => sum + (stage?.value || 0), 0) / 2500000).toFixed(1)}x</span>
                         </div>
                       </div>
                     </div>
@@ -448,7 +463,7 @@ const PipelineAnalytics = () => {
                             <td className="py-3 px-4 text-sm text-text-primary text-right">{formatCurrency(territory?.revenue)}</td>
                             <td className="py-3 px-4 text-sm text-text-primary text-right">{territory?.deals}</td>
                             <td className="py-3 px-4 text-sm text-text-primary text-right">{formatPercentage(territory?.winRate)}</td>
-                            <td className="py-3 px-4 text-sm text-text-primary text-right">{formatCurrency(territory?.revenue / territory?.deals)}</td>
+                            <td className="py-3 px-4 text-sm text-text-primary text-right">{formatCurrency(territory?.avgDealSize || (territory?.revenue / territory?.deals) || 0)}</td>
                           </tr>
                         ))}
                       </tbody>
@@ -550,7 +565,7 @@ const PipelineAnalytics = () => {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <div className="card p-6 text-center">
                     <h3 className="text-sm font-normal text-text-secondary mb-2">Total Forecast</h3>
-                    <p className="text-3xl font-normal text-primary mb-1">{formatCurrency(revenueTrendData.reduce((sum, month) => sum + month.forecast, 0))}</p>
+                    <p className="text-3xl font-normal text-primary mb-1">{formatCurrency((revenueTrendData || []).reduce((sum, month) => sum + (month?.forecast || 0), 0))}</p>
                     <p className="text-sm text-success flex items-center justify-center space-x-1">
                       <Icon name="TrendingUp" size={14} />
                       <span>Based on expected close dates</span>
@@ -559,13 +574,13 @@ const PipelineAnalytics = () => {
                   
                   <div className="card p-6 text-center">
                     <h3 className="text-sm font-normal text-text-secondary mb-2">Total Actual Revenue</h3>
-                    <p className="text-3xl font-normal text-secondary mb-1">{formatCurrency(revenueTrendData.reduce((sum, month) => sum + month.actual, 0))}</p>
+                    <p className="text-3xl font-normal text-secondary mb-1">{formatCurrency((revenueTrendData || []).reduce((sum, month) => sum + (month?.actual || 0), 0))}</p>
                     <p className="text-sm text-text-secondary">From closed won deals</p>
                   </div>
                   
                   <div className="card p-6 text-center">
                     <h3 className="text-sm font-normal text-text-secondary mb-2">Overall Win Rate</h3>
-                    <p className="text-3xl font-normal text-accent mb-1">{formatPercentage(performanceMetrics?.conversionRate)}</p>
+                    <p className="text-3xl font-normal text-accent mb-1">{velocityMetrics?.find(m => m.metric === 'Win Rate')?.value || '0%'}</p>
                     <p className="text-sm text-text-secondary">Of all deals</p>
                   </div>
                 </div>
