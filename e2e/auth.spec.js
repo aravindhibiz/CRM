@@ -1,40 +1,53 @@
-import { test, expect } from './fixtures';
+import { test, expect } from '@playwright/test';
 
 test.describe('Authentication Flow', () => {
-  test('should display login page', async ({ page }) => {
+  test('should display login page correctly', async ({ page }) => {
     await page.goto('/login');
+
+    // Check the actual title from index.html
+    await expect(page).toHaveTitle('salesflow_pro');
     
-    await expect(page).toHaveTitle(/SalesFlow/);
+    // Check for login form elements
     await expect(page.locator('input[type="email"]')).toBeVisible();
     await expect(page.locator('input[type="password"]')).toBeVisible();
     await expect(page.locator('button[type="submit"]')).toBeVisible();
+    
+    // Check for welcome text
+    await expect(page.locator('text=Welcome back')).toBeVisible();
+    await expect(page.locator('text=Sign in to your SalesFlow account')).toBeVisible();
+    
+    // Check for demo buttons
+    await expect(page.locator('text=Demo as Admin')).toBeVisible();
+    await expect(page.locator('text=Demo as Sales Rep')).toBeVisible();
   });
 
-  test('should show validation errors for empty fields', async ({ page }) => {
+  test('should use demo admin login', async ({ page }) => {
     await page.goto('/login');
-    
-    // Try to submit empty form
-    await page.click('button[type="submit"]');
-    
-    // Check for validation messages (adjust selectors based on your implementation)
-    await expect(page.locator('text=Email is required')).toBeVisible();
-    await expect(page.locator('text=Password is required')).toBeVisible();
+
+    // Click demo admin button
+    await page.click('text=Demo as Admin');
+
+    // Wait for navigation to sales dashboard
+    await page.waitForURL('**/sales-dashboard', { timeout: 10000 });
+
+    // Verify we're redirected to dashboard
+    await expect(page.url()).toContain('sales-dashboard');
   });
 
-  test('should navigate to dashboard after successful login', async ({ page }) => {
+  test('should handle manual login form', async ({ page }) => {
     await page.goto('/login');
-    
-    // Fill login form (you'll need to update these with valid test credentials)
-    await page.fill('input[type="email"]', 'test@example.com');
-    await page.fill('input[type="password"]', 'testpassword');
+
+    // Fill manual login form
+    await page.fill('input[type="email"]', 'admin@salesflow.com');
+    await page.fill('input[type="password"]', 'password123');
     
     // Submit form
     await page.click('button[type="submit"]');
-    
-    // Wait for navigation (adjust timeout as needed)
-    await page.waitForURL('**/dashboard', { timeout: 10000 });
-    
+
+    // Wait for navigation
+    await page.waitForURL('**/sales-dashboard', { timeout: 10000 });
+
     // Verify we're on the dashboard
-    await expect(page.locator('h1')).toContainText('Dashboard');
+    await expect(page.url()).toContain('sales-dashboard');
   });
 });

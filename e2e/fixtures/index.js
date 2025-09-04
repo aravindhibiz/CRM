@@ -10,15 +10,11 @@ export const test = base.extend({
     // Wait for page to load
     await page.waitForLoadState('networkidle');
     
-    // Fill in login credentials (update with your test credentials)
-    await page.fill('[data-testid="email"]', 'test@example.com');
-    await page.fill('[data-testid="password"]', 'testpassword');
-    
-    // Click login button
-    await page.click('[data-testid="login-button"]');
+    // Use demo admin login button instead of filling forms
+    await page.click('text=Demo as Admin');
     
     // Wait for navigation to dashboard
-    await page.waitForURL('**/dashboard', { timeout: 10000 });
+    await page.waitForURL('**/sales-dashboard', { timeout: 10000 });
     
     await use(page);
   },

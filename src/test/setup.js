@@ -1,5 +1,9 @@
 import '@testing-library/jest-dom';
 import { vi } from 'vitest';
+import React from 'react';
+
+// Make React available globally for mocks
+global.React = React;
 
 // Mock IntersectionObserver
 global.IntersectionObserver = vi.fn().mockImplementation(() => ({
