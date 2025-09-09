@@ -34,7 +34,13 @@ export const contactsService = {
         )
       `)?.eq('id', contactId)?.single()
 
-    if (error) throw error
+    // Handle the case where no contact is found
+    if (error) {
+      if (error.code === 'PGRST116' || error.message.includes('No rows returned')) {
+        return null;
+      }
+      throw error;
+    }
     return data
   },
 
