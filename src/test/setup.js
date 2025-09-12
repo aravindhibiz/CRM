@@ -34,53 +34,89 @@ Object.defineProperty(window, 'matchMedia', {
   })),
 });
 
-// Mock environment variables
+// Mock environment variables for unit tests
 vi.mock('import.meta', () => ({
   env: {
-    VITE_SUPABASE_URL: 'https://test.supabase.co',
-    VITE_SUPABASE_ANON_KEY: 'test-anon-key',
+    VITE_SUPABASE_URL: 'https://mock-test.supabase.co',
+    VITE_SUPABASE_ANON_KEY: 'mock-test-anon-key',
+    VITE_TEST_MODE: 'unit'
   },
 }));
 
-// Mock supabase client
-const mockSupabaseClient = {
-  auth: {
-    getUser: vi.fn().mockResolvedValue({ data: { user: null }, error: null }),
-    getSession: vi.fn().mockResolvedValue({ data: { session: null }, error: null }),
-    signIn: vi.fn().mockResolvedValue({ data: null, error: null }),
-    signOut: vi.fn().mockResolvedValue({ error: null }),
-    onAuthStateChange: vi.fn().mockReturnValue({
-      data: { subscription: { unsubscribe: vi.fn() } },
-    }),
-  },
-  from: vi.fn(() => ({
-    select: vi.fn(() => ({
-      eq: vi.fn(() => ({
-        single: vi.fn().mockResolvedValue({ data: null, error: null }),
-        order: vi.fn().mockResolvedValue({ data: [], error: null }),
-      })),
-      order: vi.fn().mockResolvedValue({ data: [], error: null }),
-      in: vi.fn(() => ({
-        order: vi.fn().mockResolvedValue({ data: [], error: null }),
-      })),
-    })),
-    insert: vi.fn(() => ({
-      select: vi.fn(() => ({
-        single: vi.fn().mockResolvedValue({ data: null, error: null }),
-      })),
-    })),
-    update: vi.fn(() => ({
-      eq: vi.fn(() => ({
-        select: vi.fn(() => ({
-          single: vi.fn().mockResolvedValue({ data: null, error: null }),
+// Mock supabase client with safe, predictable responses for unit tests
+const createSafeMockSupabaseClient = () => {
+  const createChainableMock = (finalResult = { data: [], error: null }) => {
+    const mock = vi.fn(() => ({
+      select: vi.fn(() => mock),
+      eq: vi.fn(() => mock),
+      neq: vi.fn(() => mock),
+      gt: vi.fn(() => mock),
+      gte: vi.fn(() => mock),
+      lt: vi.fn(() => mock),
+      lte: vi.fn(() => mock),
+      like: vi.fn(() => mock),
+      ilike: vi.fn(() => mock),
+      is: vi.fn(() => mock),
+      in: vi.fn(() => mock),
+      contains: vi.fn(() => mock),
+      order: vi.fn(() => mock),
+      limit: vi.fn(() => mock),
+      single: vi.fn(() => Promise.resolve({ data: null, error: null })),
+      maybeSingle: vi.fn(() => Promise.resolve({ data: null, error: null })),
+      then: vi.fn((resolve) => resolve(finalResult)),
+      // Make it thenable so it can be awaited
+      catch: vi.fn(() => Promise.resolve(finalResult))
+    }));
+    return mock;
+  };
+
+  return {
+    auth: {
+      getUser: vi.fn().mockResolvedValue({ data: { user: null }, error: null }),
+      getSession: vi.fn().mockResolvedValue({ data: { session: null }, error: null }),
+      signIn: vi.fn().mockResolvedValue({ data: null, error: null }),
+      signInWithPassword: vi.fn().mockResolvedValue({ data: { user: null }, error: null }),
+      signOut: vi.fn().mockResolvedValue({ error: null }),
+      onAuthStateChange: vi.fn().mockReturnValue({
+        data: { subscription: { unsubscribe: vi.fn() } },
+      }),
+    },
+    from: vi.fn((table) => {
+      const mockQuery = createChainableMock();
+      return {
+        select: mockQuery,
+        insert: vi.fn(() => ({
+          select: vi.fn(() => ({
+            single: vi.fn().mockResolvedValue({ data: { id: 'mock-id' }, error: null }),
+          })),
+          then: vi.fn((resolve) => resolve({ data: { id: 'mock-id' }, error: null }))
         })),
-      })),
-    })),
-    delete: vi.fn(() => ({
-      eq: vi.fn().mockResolvedValue({ data: null, error: null }),
-    })),
-  })),
+        update: vi.fn(() => ({
+          eq: vi.fn(() => ({
+            select: vi.fn(() => ({
+              single: vi.fn().mockResolvedValue({ data: { id: 'mock-id' }, error: null }),
+            })),
+            then: vi.fn((resolve) => resolve({ data: { id: 'mock-id' }, error: null }))
+          })),
+        })),
+        delete: vi.fn(() => ({
+          eq: vi.fn().mockResolvedValue({ data: null, error: null }),
+          then: vi.fn((resolve) => resolve({ data: null, error: null }))
+        })),
+        upsert: vi.fn(() => ({
+          select: vi.fn(() => ({
+            single: vi.fn().mockResolvedValue({ data: { id: 'mock-id' }, error: null }),
+          })),
+          then: vi.fn((resolve) => resolve({ data: { id: 'mock-id' }, error: null }))
+        })),
+      };
+    }),
+    // Add RPC mock
+    rpc: vi.fn().mockResolvedValue({ data: null, error: null })
+  };
 };
+
+const mockSupabaseClient = createSafeMockSupabaseClient();
 
 vi.mock('@/lib/supabase', () => ({
   supabase: mockSupabaseClient,
