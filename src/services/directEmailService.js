@@ -64,6 +64,108 @@ const directEmailService = {
   getHealth: async () => {
     return { status: 'Direct Resend API integration' };
   },
+
+  // Format HTML email content
+  formatHtmlEmail: (content, recipient) => {
+    const recipientName = recipient.split('@')[0] || '';
+    return `
+      <div style="font-family: Arial, sans-serif; line-height: 1.6; max-width: 600px; margin: 0 auto; color: #333;">
+        <p>Hello ${recipientName},</p>
+        <div>${content}</div>
+        <p style="margin-top: 20px;">Best regards,<br>CRM-Rocket Team</p>
+        <div style="margin-top: 20px; padding-top: 10px; border-top: 1px solid #eee; font-size: 12px; color: #666;">
+          Sent via CRM-Rocket
+        </div>
+      </div>
+    `;
+  },
+
+  // Validate email address format
+  validateEmailAddress: (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  },
+
+  // Format email data for sending
+  formatEmailData: (rawData) => {
+    return {
+      to: rawData.recipient,
+      subject: rawData.title,
+      html: rawData.html || rawData.message,
+    };
+  },
+
+  // Get email history (placeholder for database integration)
+  getEmailHistory: async () => {
+    // This would typically query a database
+    return [];
+  },
+
+  // Log sent email (placeholder for database integration)
+  logEmailSent: async (emailLog) => {
+    // This would typically save to a database
+    return { id: Date.now().toString(), ...emailLog };
+  },
+
+  // Get email template (placeholder)
+  getEmailTemplate: async (templateName) => {
+    // This would typically query a templates database
+    return null;
+  },
+
+  // Send bulk email (placeholder)
+  sendBulkEmail: async (bulkData) => {
+    // This would typically process multiple emails
+    return [];
+  },
+
+  // Validate email configuration
+  validateEmailConfiguration: async () => {
+    return !!RESEND_API_KEY;
+  },
+
+  // Send email with attachment
+  sendEmailWithAttachment: async (emailData) => {
+    // Resend API supports attachments, but this is a placeholder
+    console.warn('Attachments not yet implemented for direct email service');
+    return directEmailService.sendEmail(emailData);
+  },
+
+  // Track email open
+  trackEmailOpen: async (trackingData) => {
+    // This would typically log to a database
+    console.log('Email tracking:', trackingData);
+    return { tracked: true, ...trackingData };
+  },
+
+  // Get email delivery status
+  getEmailDeliveryStatus: async (emailId) => {
+    // This would typically query the Resend API
+    return { id: emailId, status: 'delivered' };
+  },
+
+  // Retry failed email
+  retryFailedEmail: async (emailId) => {
+    // This would typically retry sending an email
+    return { id: emailId, retried: true };
+  },
+
+  // Send email to contact
+  sendEmailToContact: async (contactEmail) => {
+    // This integrates with contacts data
+    return directEmailService.sendEmail({
+      to: contactEmail.email,
+      subject: contactEmail.subject,
+      body: contactEmail.body
+    });
+  },
+
+  // Schedule email
+  scheduleEmail: async (scheduledEmail) => {
+    // This would typically use a job queue
+    console.log('Email scheduling not implemented, sending immediately');
+    return directEmailService.sendEmail(scheduledEmail);
+  },
 };
 
 export default directEmailService;

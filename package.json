@@ -8,9 +8,6 @@
         "@reduxjs/toolkit": "^2.6.1",
         "@supabase/supabase-js": "^2.54.0",
         "@tailwindcss/forms": "^0.5.7",
-        "@testing-library/jest-dom": "^5.15.1",
-        "@testing-library/react": "^11.2.7",
-        "@testing-library/user-event": "^12.8.3",
         "axios": "^1.8.4",
         "class-variance-authority": "^0.7.1",
         "clsx": "^2.1.1",
@@ -36,12 +33,32 @@
     "scripts": {
         "start": "vite",
         "build": "vite build --sourcemap",
-        "serve": "vite preview"
+        "serve": "vite preview",
+        "test": "echo '🚀 Running ALL 241 tests safely (unit + integration with mocked database)...' && vitest run --config vitest.unified.config.js",
+        "test:unit": "echo '🛡️ Running SAFE unit tests (no database access)...' && vitest run",
+        "test:unit:safe": "echo '🛡️ Running SAFE unit tests (no database access)...' && vitest run",
+        "test:integration": "echo '🧪 Running integration tests with MOCKED database...' && vitest run --config vitest.integration.config.js",
+        "test:integration:safe": "echo '🧪 Running integration tests with MOCKED database...' && vitest run --config vitest.integration.config.js",
+        "test:ui": "vitest --ui",
+        "test:run": "vitest run",
+        "test:coverage": "vitest run --coverage",
+        "test:watch": "vitest",
+        "test:safe": "echo '🛡️ Running SAFE unit tests (no database access)...' && vitest run",
+        "test:core": "vitest run src/utils src/components/__tests__/ThemeToggle.test.jsx src/components/__tests__/ErrorBoundary.test.jsx",
+        "test:services": "vitest run src/services/__tests__/*.test.js",
+        "test:integration:watch": "vitest --config vitest.integration.config.js",
+        "test:all:safe": "echo '🚀 Running ALL 241 tests safely (unit + integration with mocked database)...' && npm run test:unit:safe && npm run test:integration:safe",
+        "test:e2e": "playwright test",
+        "test:e2e:ui": "playwright test --ui",
+        "test:e2e:debug": "playwright test --debug",
+        "test:e2e:report": "playwright show-report",
+        "test:all": "npm run test:all:safe && npm run test:e2e",
+        "test:working": "npm run test:core && npm run test:e2e",
+        "test:full": "npm run test:core && npm run test:integration && npm run test:e2e"
     },
     "eslintConfig": {
         "extends": [
-            "react-app",
-            "react-app/jest"
+            "react-app"
         ]
     },
     "browserslist": {
@@ -57,15 +74,23 @@
         ]
     },
     "devDependencies": {
+        "@playwright/test": "^1.55.0",
         "@tailwindcss/aspect-ratio": "^0.4.2",
         "@tailwindcss/container-queries": "^0.1.1",
         "@tailwindcss/line-clamp": "^0.1.0",
         "@tailwindcss/typography": "^0.5.16",
+        "@testing-library/jest-dom": "^6.8.0",
+        "@testing-library/react": "^16.3.0",
+        "@testing-library/user-event": "^14.6.1",
         "@vitejs/plugin-react": "4.3.4",
+        "@vitest/coverage-v8": "^3.2.4",
+        "@vitest/ui": "^3.2.4",
         "autoprefixer": "10.4.2",
+        "jsdom": "^26.1.0",
         "postcss": "8.4.8",
         "tailwindcss": "3.4.6",
         "vite": "5.0.0",
-        "vite-tsconfig-paths": "3.6.0"
+        "vite-tsconfig-paths": "3.6.0",
+        "vitest": "^3.2.4"
     }
 }

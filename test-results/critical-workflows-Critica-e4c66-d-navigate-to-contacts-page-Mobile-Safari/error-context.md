@@ -1,0 +1,709 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e4]:
+    - banner [ref=e5]:
+      - generic [ref=e7]:
+        - link "SalesForce Pro" [ref=e9]:
+          - /url: /sales-dashboard
+          - img [ref=e11]
+          - generic [ref=e14]: SalesForce Pro
+        - generic [ref=e15]:
+          - button "Switch to Dark Mode" [ref=e16] [cursor=pointer]:
+            - img [ref=e17] [cursor=pointer]
+          - button [ref=e20] [cursor=pointer]:
+            - img [ref=e22] [cursor=pointer]
+            - img [ref=e25] [cursor=pointer]
+          - button [ref=e27] [cursor=pointer]:
+            - img [ref=e28] [cursor=pointer]
+    - main [ref=e29]:
+      - generic [ref=e30]:
+        - generic [ref=e31]:
+          - generic [ref=e32]:
+            - heading "Sales Dashboard" [level=1] [ref=e33]
+            - paragraph [ref=e34]: "Last updated: 5:20:32 PM • Auto-refresh every 5 minutes"
+          - generic [ref=e35]:
+            - combobox [ref=e36]:
+              - option "This Week"
+              - option "This Month" [selected]
+              - option "This Quarter"
+              - option "This Year"
+            - combobox [ref=e37]:
+              - option "All Probabilities" [selected]
+              - option "High (>70%)"
+              - option "Medium (30-70%)"
+              - option "Low (<30%)"
+            - combobox [ref=e38]:
+              - option "All Territories" [selected]
+              - option "North America"
+              - option "Europe"
+              - option "Asia Pacific"
+        - generic [ref=e39]:
+          - generic [ref=e41]:
+            - generic [ref=e42]:
+              - paragraph [ref=e43]: Total Pipeline
+              - paragraph [ref=e44]: $19.7M
+            - img [ref=e46]
+          - generic [ref=e50]:
+            - generic [ref=e51]:
+              - paragraph [ref=e52]: Weighted Pipeline
+              - paragraph [ref=e53]: $4.8M
+            - img [ref=e55]
+          - generic [ref=e60]:
+            - generic [ref=e61]:
+              - paragraph [ref=e62]: Active Deals
+              - paragraph [ref=e63]: "22"
+            - img [ref=e65]
+          - generic [ref=e69]:
+            - generic [ref=e70]:
+              - paragraph [ref=e71]: Quota Achievement
+              - paragraph [ref=e72]: 4%
+            - img [ref=e74]
+        - generic [ref=e77]:
+          - generic [ref=e78]:
+            - generic [ref=e79]:
+              - generic [ref=e80]:
+                - heading "Sales Pipeline" [level=2] [ref=e81]
+                - generic [ref=e82]:
+                  - img [ref=e83]
+                  - generic [ref=e88]: Drag deals to update stages
+              - generic [ref=e89]:
+                - generic [ref=e90]:
+                  - generic [ref=e91]:
+                    - generic [ref=e92]:
+                      - img [ref=e93]
+                      - heading "Lead" [level=3] [ref=e96]
+                    - generic [ref=e97]: "7"
+                  - generic [ref=e98]:
+                    - generic [ref=e99]:
+                      - generic [ref=e100]: "Total:"
+                      - generic [ref=e101]: $147K
+                    - generic [ref=e102]:
+                      - generic [ref=e103]: "Weighted:"
+                      - generic [ref=e104]: $15K
+                  - generic [ref=e105]:
+                    - button "postman (Copy) (Copy) $0K 10% Unknown Contact Unknown Contact Unknown Company 15 days in stage No activity" [ref=e106]:
+                      - generic [ref=e107]:
+                        - heading "postman (Copy) (Copy)" [level=4] [ref=e108]
+                        - img [ref=e109]
+                      - generic [ref=e116]:
+                        - generic [ref=e117]: $0K
+                        - generic [ref=e118]: 10%
+                      - generic [ref=e119]:
+                        - img "Unknown Contact" [ref=e120]
+                        - generic [ref=e121]:
+                          - paragraph [ref=e122]: Unknown Contact
+                          - paragraph [ref=e123]: Unknown Company
+                      - generic [ref=e124]:
+                        - generic [ref=e125]: 15 days in stage
+                        - generic [ref=e126]: No activity
+                    - button "postman (Copy) $0K 10% Unknown Contact Unknown Contact Unknown Company 15 days in stage No activity" [ref=e127]:
+                      - generic [ref=e128]:
+                        - heading "postman (Copy)" [level=4] [ref=e129]
+                        - img [ref=e130]
+                      - generic [ref=e137]:
+                        - generic [ref=e138]: $0K
+                        - generic [ref=e139]: 10%
+                      - generic [ref=e140]:
+                        - img "Unknown Contact" [ref=e141]
+                        - generic [ref=e142]:
+                          - paragraph [ref=e143]: Unknown Contact
+                          - paragraph [ref=e144]: Unknown Company
+                      - generic [ref=e145]:
+                        - generic [ref=e146]: 15 days in stage
+                        - generic [ref=e147]: No activity
+                    - button "postman $0K 10% Unknown Contact Unknown Contact Unknown Company 15 days in stage No activity" [ref=e148]:
+                      - generic [ref=e149]:
+                        - heading "postman" [level=4] [ref=e150]
+                        - img [ref=e151]
+                      - generic [ref=e158]:
+                        - generic [ref=e159]: $0K
+                        - generic [ref=e160]: 10%
+                      - generic [ref=e161]:
+                        - img "Unknown Contact" [ref=e162]
+                        - generic [ref=e163]:
+                          - paragraph [ref=e164]: Unknown Contact
+                          - paragraph [ref=e165]: Unknown Company
+                      - generic [ref=e166]:
+                        - generic [ref=e167]: 15 days in stage
+                        - generic [ref=e168]: No activity
+                    - button "dasds $0K 10% Unknown Contact Unknown Contact Unknown Company 15 days in stage No activity" [ref=e169]:
+                      - generic [ref=e170]:
+                        - heading "dasds" [level=4] [ref=e171]
+                        - img [ref=e172]
+                      - generic [ref=e179]:
+                        - generic [ref=e180]: $0K
+                        - generic [ref=e181]: 10%
+                      - generic [ref=e182]:
+                        - img "Unknown Contact" [ref=e183]
+                        - generic [ref=e184]:
+                          - paragraph [ref=e185]: Unknown Contact
+                          - paragraph [ref=e186]: Unknown Company
+                      - generic [ref=e187]:
+                        - generic [ref=e188]: 15 days in stage
+                        - generic [ref=e189]: No activity
+                    - button "dd $12K 10% Unknown Contact Unknown Contact Unknown Company 15 days in stage No activity" [ref=e190]:
+                      - generic [ref=e191]:
+                        - heading "dd" [level=4] [ref=e192]
+                        - img [ref=e193]
+                      - generic [ref=e200]:
+                        - generic [ref=e201]: $12K
+                        - generic [ref=e202]: 10%
+                      - generic [ref=e203]:
+                        - img "Unknown Contact" [ref=e204]
+                        - generic [ref=e205]:
+                          - paragraph [ref=e206]: Unknown Contact
+                          - paragraph [ref=e207]: Unknown Company
+                      - generic [ref=e208]:
+                        - generic [ref=e209]: 15 days in stage
+                        - generic [ref=e210]: No activity
+                    - button "test 3 $11K 10% Unknown Contact Unknown Contact Unknown Company 16 days in stage No activity" [ref=e211]:
+                      - generic [ref=e212]:
+                        - heading "test 3" [level=4] [ref=e213]
+                        - img [ref=e214]
+                      - generic [ref=e221]:
+                        - generic [ref=e222]: $11K
+                        - generic [ref=e223]: 10%
+                      - generic [ref=e224]:
+                        - img "Unknown Contact" [ref=e225]
+                        - generic [ref=e226]:
+                          - paragraph [ref=e227]: Unknown Contact
+                          - paragraph [ref=e228]: Unknown Company
+                      - generic [ref=e229]:
+                        - generic [ref=e230]: 16 days in stage
+                        - generic [ref=e231]: No activity
+                    - button "test 10 $123K 10% Unknown Contact Unknown Contact Unknown Company 25 days in stage No activity" [ref=e232]:
+                      - generic [ref=e233]:
+                        - heading "test 10" [level=4] [ref=e234]
+                        - img [ref=e235]
+                      - generic [ref=e242]:
+                        - generic [ref=e243]: $123K
+                        - generic [ref=e244]: 10%
+                      - generic [ref=e245]:
+                        - img "Unknown Contact" [ref=e246]
+                        - generic [ref=e247]:
+                          - paragraph [ref=e248]: Unknown Contact
+                          - paragraph [ref=e249]: Unknown Company
+                      - generic [ref=e250]:
+                        - generic [ref=e251]: 25 days in stage
+                        - generic [ref=e252]: No activity
+                - generic [ref=e253]:
+                  - generic [ref=e254]:
+                    - generic [ref=e255]:
+                      - img [ref=e256]
+                      - heading "Qualified" [level=3] [ref=e259]
+                    - generic [ref=e260]: "2"
+                  - generic [ref=e261]:
+                    - generic [ref=e262]:
+                      - generic [ref=e263]: "Total:"
+                      - generic [ref=e264]: $1235K
+                    - generic [ref=e265]:
+                      - generic [ref=e266]: "Weighted:"
+                      - generic [ref=e267]: $309K
+                  - generic [ref=e268]:
+                    - button "rewrew $0K 25% Unknown Contact Unknown Contact Unknown Company 15 days in stage No activity" [ref=e269]:
+                      - generic [ref=e270]:
+                        - heading "rewrew" [level=4] [ref=e271]
+                        - img [ref=e272]
+                      - generic [ref=e279]:
+                        - generic [ref=e280]: $0K
+                        - generic [ref=e281]: 25%
+                      - generic [ref=e282]:
+                        - img "Unknown Contact" [ref=e283]
+                        - generic [ref=e284]:
+                          - paragraph [ref=e285]: Unknown Contact
+                          - paragraph [ref=e286]: Unknown Company
+                      - generic [ref=e287]:
+                        - generic [ref=e288]: 15 days in stage
+                        - generic [ref=e289]: No activity
+                    - button "xmen $1235K 25% Unknown Contact Unknown Contact Unknown Company 25 days in stage No activity" [ref=e290]:
+                      - generic [ref=e291]:
+                        - heading "xmen" [level=4] [ref=e292]
+                        - img [ref=e293]
+                      - generic [ref=e300]:
+                        - generic [ref=e301]: $1235K
+                        - generic [ref=e302]: 25%
+                      - generic [ref=e303]:
+                        - img "Unknown Contact" [ref=e304]
+                        - generic [ref=e305]:
+                          - paragraph [ref=e306]: Unknown Contact
+                          - paragraph [ref=e307]: Unknown Company
+                      - generic [ref=e308]:
+                        - generic [ref=e309]: 25 days in stage
+                        - generic [ref=e310]: No activity
+                - generic [ref=e311]:
+                  - generic [ref=e312]:
+                    - generic [ref=e313]:
+                      - img [ref=e314]
+                      - heading "Proposal" [level=3] [ref=e317]
+                    - generic [ref=e318]: "5"
+                  - generic [ref=e319]:
+                    - generic [ref=e320]:
+                      - generic [ref=e321]: "Total:"
+                      - generic [ref=e322]: $2591K
+                    - generic [ref=e323]:
+                      - generic [ref=e324]: "Weighted:"
+                      - generic [ref=e325]: $1295K
+                  - generic [ref=e326]:
+                    - button "aravind $1K 10% Unknown Contact Unknown Contact Unknown Company 8 days in stage No activity" [ref=e327]:
+                      - generic [ref=e328]:
+                        - heading "aravind" [level=4] [ref=e329]
+                        - img [ref=e330]
+                      - generic [ref=e337]:
+                        - generic [ref=e338]: $1K
+                        - generic [ref=e339]: 10%
+                      - generic [ref=e340]:
+                        - img "Unknown Contact" [ref=e341]
+                        - generic [ref=e342]:
+                          - paragraph [ref=e343]: Unknown Contact
+                          - paragraph [ref=e344]: Unknown Company
+                      - generic [ref=e345]:
+                        - generic [ref=e346]: 8 days in stage
+                        - generic [ref=e347]: No activity
+                    - button "dsagfasdf $1232K 50% Unknown Contact Unknown Contact Unknown Company 15 days in stage No activity" [ref=e348]:
+                      - generic [ref=e349]:
+                        - heading "dsagfasdf" [level=4] [ref=e350]
+                        - img [ref=e351]
+                      - generic [ref=e358]:
+                        - generic [ref=e359]: $1232K
+                        - generic [ref=e360]: 50%
+                      - generic [ref=e361]:
+                        - img "Unknown Contact" [ref=e362]
+                        - generic [ref=e363]:
+                          - paragraph [ref=e364]: Unknown Contact
+                          - paragraph [ref=e365]: Unknown Company
+                      - generic [ref=e366]:
+                        - generic [ref=e367]: 15 days in stage
+                        - generic [ref=e368]: No activity
+                    - button "pixel 10 $1K 50% Unknown Contact Unknown Contact Unknown Company 15 days in stage No activity" [ref=e369]:
+                      - generic [ref=e370]:
+                        - heading "pixel 10" [level=4] [ref=e371]
+                        - img [ref=e372]
+                      - generic [ref=e379]:
+                        - generic [ref=e380]: $1K
+                        - generic [ref=e381]: 50%
+                      - generic [ref=e382]:
+                        - img "Unknown Contact" [ref=e383]
+                        - generic [ref=e384]:
+                          - paragraph [ref=e385]: Unknown Contact
+                          - paragraph [ref=e386]: Unknown Company
+                      - generic [ref=e387]:
+                        - generic [ref=e388]: 15 days in stage
+                        - generic [ref=e389]: No activity
+                    - button "test 2 $122K 50% Unknown Contact Unknown Contact Unknown Company 17 days in stage No activity" [ref=e390]:
+                      - generic [ref=e391]:
+                        - heading "test 2" [level=4] [ref=e392]
+                        - img [ref=e393]
+                      - generic [ref=e400]:
+                        - generic [ref=e401]: $122K
+                        - generic [ref=e402]: 50%
+                      - generic [ref=e403]:
+                        - img "Unknown Contact" [ref=e404]
+                        - generic [ref=e405]:
+                          - paragraph [ref=e406]: Unknown Contact
+                          - paragraph [ref=e407]: Unknown Company
+                      - generic [ref=e408]:
+                        - generic [ref=e409]: 17 days in stage
+                        - generic [ref=e410]: No activity
+                    - button "test3 $1235K 50% Unknown Contact Unknown Contact Unknown Company 25 days in stage No activity" [ref=e411]:
+                      - generic [ref=e412]:
+                        - heading "test3" [level=4] [ref=e413]
+                        - img [ref=e414]
+                      - generic [ref=e421]:
+                        - generic [ref=e422]: $1235K
+                        - generic [ref=e423]: 50%
+                      - generic [ref=e424]:
+                        - img "Unknown Contact" [ref=e425]
+                        - generic [ref=e426]:
+                          - paragraph [ref=e427]: Unknown Contact
+                          - paragraph [ref=e428]: Unknown Company
+                      - generic [ref=e429]:
+                        - generic [ref=e430]: 25 days in stage
+                        - generic [ref=e431]: No activity
+                - generic [ref=e432]:
+                  - generic [ref=e433]:
+                    - generic [ref=e434]:
+                      - img [ref=e435]
+                      - heading "Negotiation" [level=3] [ref=e437]
+                    - generic [ref=e438]: "4"
+                  - generic [ref=e439]:
+                    - generic [ref=e440]:
+                      - generic [ref=e441]: "Total:"
+                      - generic [ref=e442]: $2250K
+                    - generic [ref=e443]:
+                      - generic [ref=e444]: "Weighted:"
+                      - generic [ref=e445]: $1687K
+                  - generic [ref=e446]:
+                    - button "700 days $5K 75% Unknown Contact Unknown Contact Unknown Company 8 days in stage No activity" [ref=e447]:
+                      - generic [ref=e448]:
+                        - heading "700 days" [level=4] [ref=e449]
+                        - img [ref=e450]
+                      - generic [ref=e457]:
+                        - generic [ref=e458]: $5K
+                        - generic [ref=e459]: 75%
+                      - generic [ref=e460]:
+                        - img "Unknown Contact" [ref=e461]
+                        - generic [ref=e462]:
+                          - paragraph [ref=e463]: Unknown Contact
+                          - paragraph [ref=e464]: Unknown Company
+                      - generic [ref=e465]:
+                        - generic [ref=e466]: 8 days in stage
+                        - generic [ref=e467]: No activity
+                    - button "deal 123 $10K 75% Unknown Contact Unknown Contact Unknown Company 16 days in stage No activity" [ref=e468]:
+                      - generic [ref=e469]:
+                        - heading "deal 123" [level=4] [ref=e470]
+                        - img [ref=e471]
+                      - generic [ref=e478]:
+                        - generic [ref=e479]: $10K
+                        - generic [ref=e480]: 75%
+                      - generic [ref=e481]:
+                        - img "Unknown Contact" [ref=e482]
+                        - generic [ref=e483]:
+                          - paragraph [ref=e484]: Unknown Contact
+                          - paragraph [ref=e485]: Unknown Company
+                      - generic [ref=e486]:
+                        - generic [ref=e487]: 16 days in stage
+                        - generic [ref=e488]: No activity
+                    - button "F2 $1000K 75% Unknown Contact Unknown Contact Unknown Company 25 days in stage No activity" [ref=e489]:
+                      - generic [ref=e490]:
+                        - heading "F2" [level=4] [ref=e491]
+                        - img [ref=e492]
+                      - generic [ref=e499]:
+                        - generic [ref=e500]: $1000K
+                        - generic [ref=e501]: 75%
+                      - generic [ref=e502]:
+                        - img "Unknown Contact" [ref=e503]
+                        - generic [ref=e504]:
+                          - paragraph [ref=e505]: Unknown Contact
+                          - paragraph [ref=e506]: Unknown Company
+                      - generic [ref=e507]:
+                        - generic [ref=e508]: 25 days in stage
+                        - generic [ref=e509]: No activity
+                    - button "test4 $1235K 75% Unknown Contact Unknown Contact Unknown Company 25 days in stage No activity" [ref=e510]:
+                      - generic [ref=e511]:
+                        - heading "test4" [level=4] [ref=e512]
+                        - img [ref=e513]
+                      - generic [ref=e520]:
+                        - generic [ref=e521]: $1235K
+                        - generic [ref=e522]: 75%
+                      - generic [ref=e523]:
+                        - img "Unknown Contact" [ref=e524]
+                        - generic [ref=e525]:
+                          - paragraph [ref=e526]: Unknown Contact
+                          - paragraph [ref=e527]: Unknown Company
+                      - generic [ref=e528]:
+                        - generic [ref=e529]: 25 days in stage
+                        - generic [ref=e530]: No activity
+                - generic [ref=e531]:
+                  - generic [ref=e532]:
+                    - generic [ref=e533]:
+                      - img [ref=e534]
+                      - heading "Closed Won" [level=3] [ref=e536]
+                    - generic [ref=e537]: "2"
+                  - generic [ref=e538]:
+                    - generic [ref=e539]:
+                      - generic [ref=e540]: "Total:"
+                      - generic [ref=e541]: $112K
+                    - generic [ref=e542]:
+                      - generic [ref=e543]: "Weighted:"
+                      - generic [ref=e544]: $112K
+                  - generic [ref=e545]:
+                    - button "hi heloo $100K 100% Unknown Contact Unknown Contact Unknown Company 25 days in stage No activity" [ref=e546]:
+                      - generic [ref=e547]:
+                        - heading "hi heloo" [level=4] [ref=e548]
+                        - img [ref=e549]
+                      - generic [ref=e556]:
+                        - generic [ref=e557]: $100K
+                        - generic [ref=e558]: 100%
+                      - generic [ref=e559]:
+                        - img "Unknown Contact" [ref=e560]
+                        - generic [ref=e561]:
+                          - paragraph [ref=e562]: Unknown Contact
+                          - paragraph [ref=e563]: Unknown Company
+                      - generic [ref=e564]:
+                        - generic [ref=e565]: 25 days in stage
+                        - generic [ref=e566]: No activity
+                    - button "qwerty $12K 100% Unknown Contact Unknown Contact Unknown Company 25 days in stage No activity" [ref=e567]:
+                      - generic [ref=e568]:
+                        - heading "qwerty" [level=4] [ref=e569]
+                        - img [ref=e570]
+                      - generic [ref=e577]:
+                        - generic [ref=e578]: $12K
+                        - generic [ref=e579]: 100%
+                      - generic [ref=e580]:
+                        - img "Unknown Contact" [ref=e581]
+                        - generic [ref=e582]:
+                          - paragraph [ref=e583]: Unknown Contact
+                          - paragraph [ref=e584]: Unknown Company
+                      - generic [ref=e585]:
+                        - generic [ref=e586]: 25 days in stage
+                        - generic [ref=e587]: No activity
+                - generic [ref=e588]:
+                  - generic [ref=e589]:
+                    - generic [ref=e590]:
+                      - img [ref=e591]
+                      - heading "Closed Lost" [level=3] [ref=e593]
+                    - generic [ref=e594]: "2"
+                  - generic [ref=e595]:
+                    - generic [ref=e596]:
+                      - generic [ref=e597]: "Total:"
+                      - generic [ref=e598]: $13346K
+                    - generic [ref=e599]:
+                      - generic [ref=e600]: "Weighted:"
+                      - generic [ref=e601]: $1335K
+                  - generic [ref=e602]:
+                    - button "test deal $12346K 10% Unknown Contact Unknown Contact Unknown Company 25 days in stage No activity" [ref=e603]:
+                      - generic [ref=e604]:
+                        - heading "test deal" [level=4] [ref=e605]
+                        - img [ref=e606]
+                      - generic [ref=e613]:
+                        - generic [ref=e614]: $12346K
+                        - generic [ref=e615]: 10%
+                      - generic [ref=e616]:
+                        - img "Unknown Contact" [ref=e617]
+                        - generic [ref=e618]:
+                          - paragraph [ref=e619]: Unknown Contact
+                          - paragraph [ref=e620]: Unknown Company
+                      - generic [ref=e621]:
+                        - generic [ref=e622]: 25 days in stage
+                        - generic [ref=e623]: No activity
+                    - button "appleXsamsung $1000K 10% Unknown Contact Unknown Contact Unknown Company 25 days in stage No activity" [ref=e624]:
+                      - generic [ref=e625]:
+                        - heading "appleXsamsung" [level=4] [ref=e626]
+                        - img [ref=e627]
+                      - generic [ref=e634]:
+                        - generic [ref=e635]: $1000K
+                        - generic [ref=e636]: 10%
+                      - generic [ref=e637]:
+                        - img "Unknown Contact" [ref=e638]
+                        - generic [ref=e639]:
+                          - paragraph [ref=e640]: Unknown Contact
+                          - paragraph [ref=e641]: Unknown Company
+                      - generic [ref=e642]:
+                        - generic [ref=e643]: 25 days in stage
+                        - generic [ref=e644]: No activity
+            - generic [ref=e645]:
+              - heading "Monthly Revenue Forecast" [level=2] [ref=e646]
+              - img [ref=e650]:
+                - generic [ref=e656]:
+                  - generic [ref=e659]: Feb
+                  - generic [ref=e662]: Apr
+                  - generic [ref=e665]: Jun
+                  - generic [ref=e668]: Aug
+                  - generic [ref=e671]: Oct
+                  - generic [ref=e674]: Dec
+                - generic [ref=e676]:
+                  - generic [ref=e679]: $0K
+                  - generic [ref=e682]: $350K
+                  - generic [ref=e685]: $700K
+                  - generic [ref=e688]: $1050K
+                  - generic [ref=e691]: $1400K
+            - generic [ref=e699]:
+              - heading "Performance Metrics" [level=2] [ref=e700]
+              - generic [ref=e701]:
+                - generic [ref=e702]:
+                  - heading "Quota Achievement" [level=3] [ref=e703]
+                  - generic [ref=e704]:
+                    - img [ref=e708]:
+                      - generic [ref=e710]:
+                        - generic [ref=e711]:
+                          - img [ref=e713]
+                          - img [ref=e715]
+                        - generic [ref=e716]:
+                          - generic [ref=e718]: 4%
+                          - generic [ref=e720]: 96%
+                    - generic [ref=e721]:
+                      - generic [ref=e722]:
+                        - paragraph [ref=e723]: Quota
+                        - paragraph [ref=e724]: $2.5M
+                      - generic [ref=e725]:
+                        - paragraph [ref=e726]: Achieved
+                        - paragraph [ref=e727]: $0.1M
+                      - generic [ref=e728]:
+                        - paragraph [ref=e729]: Remaining
+                        - paragraph [ref=e730]: $2.4M
+                - generic [ref=e731]:
+                  - heading "Deal Outcomes" [level=3] [ref=e732]
+                  - generic [ref=e733]:
+                    - img [ref=e737]:
+                      - generic [ref=e739]:
+                        - generic [ref=e740]:
+                          - img [ref=e742]
+                          - img [ref=e744]
+                        - generic [ref=e745]:
+                          - generic [ref=e747]: 50%
+                          - generic [ref=e749]: 50%
+                    - generic [ref=e750]:
+                      - generic [ref=e751]:
+                        - paragraph [ref=e752]: Deals Won
+                        - paragraph [ref=e753]: "2"
+                      - generic [ref=e754]:
+                        - paragraph [ref=e755]: Deals Lost
+                        - paragraph [ref=e756]: "2"
+                      - generic [ref=e757]:
+                        - paragraph [ref=e758]: Win Rate
+                        - paragraph [ref=e759]: 50.0%
+              - generic [ref=e760]:
+                - generic [ref=e761]:
+                  - img [ref=e763]
+                  - paragraph [ref=e765]: Avg Deal Size
+                  - paragraph [ref=e766]: $56K
+                - generic [ref=e767]:
+                  - img [ref=e769]
+                  - paragraph [ref=e772]: Conversion Rate
+                  - paragraph [ref=e773]: 9.1%
+                - generic [ref=e774]:
+                  - img [ref=e776]
+                  - paragraph [ref=e779]: Avg Sales Cycle
+                  - paragraph [ref=e780]: 45 days
+                - generic [ref=e781]:
+                  - img [ref=e783]
+                  - paragraph [ref=e787]: Activities
+                  - paragraph [ref=e788]: "127"
+              - generic [ref=e789]:
+                - heading "Monthly Performance Trend" [level=3] [ref=e790]
+                - img [ref=e794]:
+                  - generic [ref=e800]:
+                    - generic [ref=e803]: Jan
+                    - generic [ref=e806]: Feb
+                    - generic [ref=e809]: Mar
+                    - generic [ref=e812]: Apr
+                    - generic [ref=e815]: May
+                    - generic [ref=e818]: Jun
+                  - generic [ref=e820]:
+                    - generic [ref=e823]: $0K
+                    - generic [ref=e826]: $200K
+                    - generic [ref=e829]: $400K
+                    - generic [ref=e832]: $600K
+                    - generic [ref=e835]: $800K
+          - generic [ref=e866]:
+            - generic [ref=e867]:
+              - heading "Quick Actions" [level=3] [ref=e868]
+              - generic [ref=e869]:
+                - button "Add New Deal Create a new sales opportunity" [ref=e870] [cursor=pointer]:
+                  - generic [ref=e871] [cursor=pointer]:
+                    - img [ref=e872] [cursor=pointer]
+                    - generic [ref=e873] [cursor=pointer]: Add New Deal
+                  - paragraph [ref=e874] [cursor=pointer]: Create a new sales opportunity
+                - button "Add Contact Add a new customer contact" [ref=e875] [cursor=pointer]:
+                  - generic [ref=e876] [cursor=pointer]:
+                    - img [ref=e877] [cursor=pointer]
+                    - generic [ref=e880] [cursor=pointer]: Add Contact
+                  - paragraph [ref=e881] [cursor=pointer]: Add a new customer contact
+                - button "Schedule Meeting Book a call or demo" [ref=e882] [cursor=pointer]:
+                  - generic [ref=e883] [cursor=pointer]:
+                    - img [ref=e884] [cursor=pointer]
+                    - generic [ref=e886] [cursor=pointer]: Schedule Meeting
+                  - paragraph [ref=e887] [cursor=pointer]: Book a call or demo
+                - button "Send Email Compose and send email" [ref=e888] [cursor=pointer]:
+                  - generic [ref=e889] [cursor=pointer]:
+                    - img [ref=e890] [cursor=pointer]
+                    - generic [ref=e893] [cursor=pointer]: Send Email
+                  - paragraph [ref=e894] [cursor=pointer]: Compose and send email
+              - generic [ref=e895]:
+                - heading "Quick Navigation" [level=4] [ref=e896]
+                - generic [ref=e897]:
+                  - link "Deal Management" [ref=e898]:
+                    - /url: /deal-management
+                    - img [ref=e899]
+                    - generic [ref=e903]: Deal Management
+                    - img [ref=e904]
+                  - link "Contact Management" [ref=e906]:
+                    - /url: /contact-management
+                    - img [ref=e907]
+                    - generic [ref=e912]: Contact Management
+                    - img [ref=e913]
+                  - link "Pipeline Analytics" [ref=e915]:
+                    - /url: /pipeline-analytics
+                    - img [ref=e916]
+                    - generic [ref=e919]: Pipeline Analytics
+                    - img [ref=e920]
+                  - link "Activity Timeline" [ref=e922]:
+                    - /url: /activity-timeline
+                    - img [ref=e923]
+                    - generic [ref=e926]: Activity Timeline
+                    - img [ref=e927]
+            - generic [ref=e929]:
+              - generic [ref=e930]:
+                - heading "Upcoming Tasks" [level=3] [ref=e931]
+                - button [ref=e932] [cursor=pointer]:
+                  - img [ref=e933] [cursor=pointer]
+              - generic [ref=e938]:
+                - img [ref=e939]
+                - paragraph [ref=e942]: No upcoming tasks
+            - generic [ref=e943]:
+              - generic [ref=e944]:
+                - heading "Recent Activity" [level=3] [ref=e945]
+                - button [ref=e946] [cursor=pointer]:
+                  - img [ref=e947] [cursor=pointer]
+              - generic [ref=e952]:
+                - generic [ref=e953]:
+                  - img [ref=e955]
+                  - generic [ref=e958]:
+                    - paragraph [ref=e959]: ddd
+                    - generic [ref=e960]:
+                      - generic [ref=e961]: Admin User
+                      - generic [ref=e962]: •
+                      - generic [ref=e963]: peter pan
+                      - generic [ref=e964]: •
+                      - generic [ref=e965]: amazon
+                    - paragraph [ref=e966]: 8/21/2025
+                - generic [ref=e967]:
+                  - img [ref=e969]
+                  - generic [ref=e972]:
+                    - paragraph [ref=e973]: test act
+                    - generic [ref=e974]:
+                      - generic [ref=e975]: Admin User
+                      - generic [ref=e976]: •
+                      - generic [ref=e977]: Aravind S
+                      - generic [ref=e978]: •
+                      - generic [ref=e979]: hibiz
+                    - paragraph [ref=e980]: 8/19/2025
+                - generic [ref=e981]:
+                  - img [ref=e983]
+                  - generic [ref=e986]:
+                    - paragraph [ref=e987]: eod
+                    - generic [ref=e988]:
+                      - generic [ref=e989]: Admin User
+                      - generic [ref=e990]: •
+                      - generic [ref=e991]: Aravind S
+                      - generic [ref=e992]: •
+                      - generic [ref=e993]: hibiz
+                    - paragraph [ref=e994]: 8/19/2025
+                - generic [ref=e995]:
+                  - img [ref=e997]
+                  - generic [ref=e1000]:
+                    - paragraph [ref=e1001]: underoos
+                    - generic [ref=e1002]:
+                      - generic [ref=e1003]: Admin User
+                      - generic [ref=e1004]: •
+                      - generic [ref=e1005]: Nathan mathers
+                      - generic [ref=e1006]: •
+                      - generic [ref=e1007]: Acme Corporation
+                    - paragraph [ref=e1008]: 8/18/2025
+                - generic [ref=e1009]:
+                  - img [ref=e1011]
+                  - generic [ref=e1014]:
+                    - paragraph [ref=e1015]: hi brother
+                    - generic [ref=e1016]:
+                      - generic [ref=e1017]: Admin User
+                      - generic [ref=e1018]: •
+                      - generic [ref=e1019]: Michael Chen
+                      - generic [ref=e1020]: •
+                      - generic [ref=e1021]: Acme Corporation
+                    - paragraph [ref=e1022]: 8/18/2025
+                - generic [ref=e1023]:
+                  - img [ref=e1025]
+                  - generic [ref=e1028]:
+                    - paragraph [ref=e1029]: helo there
+                    - generic [ref=e1030]:
+                      - generic [ref=e1031]: Admin User
+                      - generic [ref=e1032]: •
+                      - generic [ref=e1033]: Aravind S
+                      - generic [ref=e1034]: •
+                      - generic [ref=e1035]: hibiz
+                    - paragraph [ref=e1036]: 8/18/2025
+                - button "View all activity →" [ref=e1038] [cursor=pointer]
+  - generic [ref=e1040]: $200K
+```
