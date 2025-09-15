@@ -13,6 +13,7 @@
         "clsx": "^2.1.1",
         "d3": "^7.9.0",
         "date-fns": "^4.1.0",
+        "express": "^4.21.2",
         "framer-motion": "^10.16.4",
         "lucide-react": "^0.484.0",
         "react": "^18.2.0",
@@ -31,9 +32,11 @@
         "tailwindcss-fluid-type": "^2.0.7"
     },
     "scripts": {
-        "start": "vite",
-        "build": "vite build --sourcemap",
-        "serve": "vite preview",
+        "dev": "vite",
+        "start": "node server.js",
+        "build": "vite build",
+        "preview": "vite preview",
+        "heroku-postbuild": "npm run build",
         "test": "echo '🚀 Running ALL 241 tests safely (unit + integration with mocked database)...' && vitest run --config vitest.unified.config.js",
         "test:unit": "echo '🛡️ Running SAFE unit tests (no database access)...' && vitest run",
         "test:unit:safe": "echo '🛡️ Running SAFE unit tests (no database access)...' && vitest run",
@@ -92,5 +95,9 @@
         "vite": "5.0.0",
         "vite-tsconfig-paths": "3.6.0",
         "vitest": "^3.2.4"
+    },
+    "engines": {
+        "node": ">=18.0.0",
+        "npm": ">=8.0.0"
     }
 }
