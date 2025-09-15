@@ -1,2 +1,2 @@
 summa file
-checking
+checking...
