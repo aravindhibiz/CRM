@@ -1,21 +1,21 @@
 # Multi-stage build for SalesFlow Pro
-# Stage 1: Build the React application
-FROM node:18-alpine AS builder
+# Stage 1: Build the React application (commented out - using pre-built assets)
+# FROM node:18-alpine AS builder
 
 # Set working directory
-WORKDIR /app
+# WORKDIR /app
 
 # Copy package files
-COPY package*.json ./
+# COPY package*.json ./
 
 # Install ALL dependencies (including dev dependencies needed for build)
-RUN npm ci --silent
+# RUN npm ci --silent
 
 # Copy source code
-COPY . .
+# COPY . .
 
 # Build the application
-RUN npm run build
+# RUN npm run build
 
 # Stage 2: Production server
 FROM node:18-alpine AS production
@@ -37,8 +37,8 @@ COPY package*.json ./
 RUN npm ci --only=production --silent && \
     npm cache clean --force
 
-# Copy built application from builder stage
-COPY --from=builder /app/dist ./dist
+# Copy pre-built application assets
+COPY dist ./dist
 
 # Copy server file
 COPY server.js ./
