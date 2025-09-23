@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import Header from 'components/ui/Header';
 import Breadcrumb from 'components/ui/Breadcrumb';
 import Icon from 'components/AppIcon';
@@ -8,6 +8,9 @@ import activitiesService from '../../services/activitiesService';
 import ActivityCard from './components/ActivityCard';
 import ActivityFilters from './components/ActivityFilters';
 import AddActivityModal from './components/AddActivityModal';
+import ActivityInsights from './components/ActivityInsights';
+import BulkActionsBar from './components/BulkActionsBar';
+import ActivityTemplateModal from './components/ActivityTemplateModal';
 
 const ActivityTimeline = () => {
   const { user } = useAuth();
@@ -23,9 +26,15 @@ const ActivityTimeline = () => {
   });
   const [searchQuery, setSearchQuery] = useState('');
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isTemplateModalOpen, setIsTemplateModalOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [selectedActivities, setSelectedActivities] = useState(new Set());
+  const [showBulkActions, setShowBulkActions] = useState(false);
+  const [viewMode, setViewMode] = useState('timeline'); // 'timeline' or 'insights'
+  const [autoRefresh, setAutoRefresh] = useState(false);
+  const [lastRefresh, setLastRefresh] = useState(new Date());
 
-  const loadActivities = async () => {
+  const loadActivities = useCallback(async () => {
     if (!user) return;
     console.log("Starting to load activities...");
     try {
@@ -34,20 +43,96 @@ const ActivityTimeline = () => {
       const data = await activitiesService.getUserActivities();
       console.log("Data received from activitiesService:", data);
       setActivities(data);
+      setLastRefresh(new Date());
     } catch (err) {
       console.error("Error loading activities:", err);
       setError("Failed to load activities. Please try again.");
     } finally {
       setLoading(false);
     }
-  };
+  }, [user]);
 
   useEffect(() => {
     loadActivities();
-  }, [user]);
+  }, [loadActivities]);
+
+  // Auto-refresh functionality
+  useEffect(() => {
+    if (!autoRefresh) return;
+    
+    const interval = setInterval(() => {
+      loadActivities();
+    }, 30000); // Refresh every 30 seconds
+
+    return () => clearInterval(interval);
+  }, [autoRefresh, loadActivities]);
 
   const handleActivityAdded = (newActivity) => {
     setActivities(prevActivities => [newActivity, ...prevActivities]);
+  };
+
+  const handleBulkAction = async (action, activityIds) => {
+    try {
+      switch (action) {
+        case 'delete':
+          // Implementation for bulk delete
+          await Promise.all(activityIds.map(id => activitiesService.deleteActivity(id)));
+          setActivities(prev => prev.filter(activity => !activityIds.includes(activity.id)));
+          break;
+        case 'export':
+          // Implementation for bulk export
+          const selectedActivitiesData = activities.filter(activity => activityIds.includes(activity.id));
+          const exportData = selectedActivitiesData.map(activity => ({
+            timestamp: activity.created_at,
+            type: activity.type,
+            subject: activity.subject,
+            description: activity.description,
+            contact: activity.contact ? `${activity.contact.first_name} ${activity.contact.last_name}` : 'N/A',
+            company: activity.contact?.company?.name || 'N/A'
+          }));
+          
+          const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `selected_activities_${new Date().toISOString().split('T')[0]}.json`;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+          break;
+        default:
+          break;
+      }
+      setSelectedActivities(new Set());
+      setShowBulkActions(false);
+    } catch (err) {
+      console.error('Bulk action failed:', err);
+      setError('Failed to perform bulk action. Please try again.');
+    }
+  };
+
+  const handleActivitySelection = (activityId, isSelected) => {
+    setSelectedActivities(prev => {
+      const newSet = new Set(prev);
+      if (isSelected) {
+        newSet.add(activityId);
+      } else {
+        newSet.delete(activityId);
+      }
+      setShowBulkActions(newSet.size > 0);
+      return newSet;
+    });
+  };
+
+  const handleSelectAll = () => {
+    if (selectedActivities.size === filteredActivities.length) {
+      setSelectedActivities(new Set());
+      setShowBulkActions(false);
+    } else {
+      setSelectedActivities(new Set(filteredActivities.map(activity => activity.id)));
+      setShowBulkActions(true);
+    }
   };
 
   const transformedActivities = useMemo(() => {
@@ -152,22 +237,77 @@ const ActivityTimeline = () => {
               </p>
             </div>
             
-            <div className="flex items-center space-x-4 mt-4 lg:mt-0">
-              <button
-                onClick={handleExportTimeline}
-                className="flex items-center space-x-2 px-4 py-2 border border-border rounded-lg text-text-secondary hover:text-text-primary hover:bg-surface-hover transition-all duration-150 ease-out"
-              >
-                <Icon name="Download" size={16} />
-                <span>Export Timeline</span>
-              </button>
-              
-              <button
-                onClick={() => setIsAddModalOpen(true)}
-                className="btn-primary flex items-center space-x-2"
-              >
-                <Icon name="Plus" size={16} />
-                <span>Add Activity</span>
-              </button>
+            <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-3 sm:space-y-0 sm:space-x-4 mt-4 lg:mt-0">
+              {/* View Mode Toggle */}
+              <div className="flex items-center bg-surface border border-border rounded-lg p-1">
+                <button
+                  onClick={() => setViewMode('timeline')}
+                  className={`px-3 py-1.5 text-sm rounded-md transition-all duration-150 ${
+                    viewMode === 'timeline' 
+                      ? 'bg-primary text-white' 
+                      : 'text-text-secondary hover:text-text-primary'
+                  }`}
+                >
+                  <Icon name="List" size={16} className="inline mr-1" />
+                  Timeline
+                </button>
+                <button
+                  onClick={() => setViewMode('insights')}
+                  className={`px-3 py-1.5 text-sm rounded-md transition-all duration-150 ${
+                    viewMode === 'insights' 
+                      ? 'bg-primary text-white' 
+                      : 'text-text-secondary hover:text-text-primary'
+                  }`}
+                >
+                  <Icon name="BarChart3" size={16} className="inline mr-1" />
+                  Insights
+                </button>
+              </div>
+
+              {/* Auto-refresh Toggle */}
+              <div className="flex items-center space-x-2">
+                <button
+                  onClick={() => setAutoRefresh(!autoRefresh)}
+                  className={`flex items-center space-x-2 px-3 py-1.5 rounded-lg text-sm transition-all duration-150 ${
+                    autoRefresh 
+                      ? 'bg-primary text-white' 
+                      : 'border border-border text-text-secondary hover:text-text-primary hover:bg-surface-hover'
+                  }`}
+                >
+                  <Icon name="RefreshCw" size={14} className={autoRefresh ? 'animate-spin' : ''} />
+                  <span>Auto-refresh</span>
+                </button>
+                <span className="text-xs text-text-tertiary">
+                  Last: {lastRefresh.toLocaleTimeString()}
+                </span>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex items-center space-x-3">
+                <button
+                  onClick={() => setIsTemplateModalOpen(true)}
+                  className="flex items-center space-x-2 px-4 py-2 border border-border rounded-lg text-text-secondary hover:text-text-primary hover:bg-surface-hover transition-all duration-150 ease-out"
+                >
+                  <Icon name="FileTemplate" size={16} />
+                  <span>Templates</span>
+                </button>
+                
+                <button
+                  onClick={handleExportTimeline}
+                  className="flex items-center space-x-2 px-4 py-2 border border-border rounded-lg text-text-secondary hover:text-text-primary hover:bg-surface-hover transition-all duration-150 ease-out"
+                >
+                  <Icon name="Download" size={16} />
+                  <span>Export</span>
+                </button>
+                
+                <button
+                  onClick={() => setIsAddModalOpen(true)}
+                  className="btn-primary flex items-center space-x-2"
+                >
+                  <Icon name="Plus" size={16} />
+                  <span>Add Activity</span>
+                </button>
+              </div>
             </div>
           </div>
 
@@ -219,9 +359,36 @@ const ActivityTimeline = () => {
             </button>
 
             <div className="flex-1">
+              {/* Bulk Actions Bar */}
+              {showBulkActions && (
+                <BulkActionsBar
+                  selectedCount={selectedActivities.size}
+                  onBulkAction={handleBulkAction}
+                  onClearSelection={() => {
+                    setSelectedActivities(new Set());
+                    setShowBulkActions(false);
+                  }}
+                />
+              )}
+
+              {/* Activity Controls */}
               <div className="flex items-center justify-between mb-6">
-                <div className="text-sm text-text-secondary">
-                  Showing {filteredActivities.length} of {activities.length} activities
+                <div className="flex items-center space-x-4">
+                  <div className="text-sm text-text-secondary">
+                    Showing {filteredActivities.length} of {activities.length} activities
+                  </div>
+                  
+                  {filteredActivities.length > 0 && (
+                    <label className="flex items-center space-x-2 text-sm text-text-secondary">
+                      <input
+                        type="checkbox"
+                        checked={selectedActivities.size === filteredActivities.length}
+                        onChange={handleSelectAll}
+                        className="rounded border-border text-primary focus:ring-primary"
+                      />
+                      <span>Select all</span>
+                    </label>
+                  )}
                 </div>
                 
                 {(selectedFilters.activityType !== 'all' || selectedFilters.dateRange !== 'all' || 
@@ -243,39 +410,49 @@ const ActivityTimeline = () => {
                 )}
               </div>
 
-              {loading ? (
-                <div className="text-center py-12">
-                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-                  <p className="text-text-secondary">Loading activities...</p>
-                </div>
+              {/* Content based on view mode */}
+              {viewMode === 'insights' ? (
+                <ActivityInsights activities={filteredActivities} />
               ) : (
-                <div className="space-y-6">
-                  {filteredActivities.length > 0 ? (
-                    filteredActivities.map((activity, index) => (
-                      <ActivityCard
-                        key={activity.id}
-                        activity={activity}
-                        isLast={index === filteredActivities.length - 1}
-                      />
-                    ))
-                  ) : (
+                <>
+                  {loading ? (
                     <div className="text-center py-12">
-                      <div className="w-16 h-16 bg-primary-50 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <Icon name="Clock" size={32} className="text-primary" />
-                      </div>
-                      <h3 className="text-lg font-semibold text-text-primary mb-2">No activities found</h3>
-                      <p className="text-text-secondary mb-4">
-                        Try adjusting your filters or search terms to find activities.
-                      </p>
-                      <button
-                        onClick={() => setIsAddModalOpen(true)}
-                        className="btn-primary"
-                      >
-                        Add First Activity
-                      </button>
+                      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+                      <p className="text-text-secondary">Loading activities...</p>
+                    </div>
+                  ) : (
+                    <div className="space-y-6">
+                      {filteredActivities.length > 0 ? (
+                        filteredActivities.map((activity, index) => (
+                          <ActivityCard
+                            key={activity.id}
+                            activity={activity}
+                            isLast={index === filteredActivities.length - 1}
+                            isSelected={selectedActivities.has(activity.id)}
+                            onSelectionChange={(isSelected) => handleActivitySelection(activity.id, isSelected)}
+                            showCheckbox={true}
+                          />
+                        ))
+                      ) : (
+                        <div className="text-center py-12">
+                          <div className="w-16 h-16 bg-primary-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <Icon name="Clock" size={32} className="text-primary" />
+                          </div>
+                          <h3 className="text-lg font-semibold text-text-primary mb-2">No activities found</h3>
+                          <p className="text-text-secondary mb-4">
+                            Try adjusting your filters or search terms to find activities.
+                          </p>
+                          <button
+                            onClick={() => setIsAddModalOpen(true)}
+                            className="btn-primary"
+                          >
+                            Add First Activity
+                          </button>
+                        </div>
+                      )}
                     </div>
                   )}
-                </div>
+                </>
               )}
             </div>
           </div>
@@ -287,6 +464,18 @@ const ActivityTimeline = () => {
           isOpen={isAddModalOpen}
           onClose={() => setIsAddModalOpen(false)}
           onActivityAdded={handleActivityAdded}
+        />
+      )}
+      
+      {isTemplateModalOpen && (
+        <ActivityTemplateModal
+          isOpen={isTemplateModalOpen}
+          onClose={() => setIsTemplateModalOpen(false)}
+          onTemplateSelected={(template) => {
+            setIsTemplateModalOpen(false);
+            setIsAddModalOpen(true);
+            // Pass template data to add modal
+          }}
         />
       )}
     </div>
