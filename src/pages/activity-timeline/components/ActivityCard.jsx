@@ -2,8 +2,13 @@ import React, { useState } from 'react';
 import Icon from 'components/AppIcon';
 import Image from 'components/AppImage';
 
-const ActivityCard = ({ activity, isLast }) => {
+const ActivityCard = ({ activity, isLast, isSelected, onSelectionChange, showCheckbox = false }) => {
   const [isExpanded, setIsExpanded] = useState(false);
+
+  const handleSelectionChange = (e) => {
+    e.stopPropagation();
+    onSelectionChange(e.target.checked);
+  };
 
   const getActivityIcon = (type) => {
     switch (type) {
@@ -100,28 +105,38 @@ const ActivityCard = ({ activity, isLast }) => {
         <div className="flex-1 card p-6">
           {/* Header */}
           <div className="flex items-start justify-between mb-4">
-            <div className="flex-1">
-              <div className="flex items-center space-x-3 mb-2">
-                <h3 className="text-lg font-semibold text-text-primary">{activity?.title}</h3>
-                <span className={`px-2 py-1 rounded-full text-xs font-medium ${getPriorityColor(activity?.priority)}`}>
-                  {activity?.priority}
-                </span>
-                {activity?.dealValue && (
-                  <span className="px-2 py-1 bg-success-50 text-success rounded-full text-xs font-medium">
-                    {activity?.dealValue}
+            <div className="flex items-center space-x-3 flex-1">
+              {showCheckbox && (
+                <input
+                  type="checkbox"
+                  checked={isSelected}
+                  onChange={handleSelectionChange}
+                  className="rounded border-border text-primary focus:ring-primary"
+                />
+              )}
+              <div className="flex-1">
+                <div className="flex items-center space-x-3 mb-2">
+                  <h3 className="text-lg font-semibold text-text-primary">{activity?.title}</h3>
+                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${getPriorityColor(activity?.priority)}`}>
+                    {activity?.priority}
                   </span>
-                )}
-              </div>
-              
-              <div className="flex items-center space-x-4 text-sm text-text-secondary">
-                <div className="flex items-center space-x-2">
-                  <Icon name={getChannelIcon(activity?.channel)} size={14} />
-                  <span className="capitalize">{activity?.channel}</span>
+                  {activity?.dealValue && (
+                    <span className="px-2 py-1 bg-success-50 text-success rounded-full text-xs font-medium">
+                      {activity?.dealValue}
+                    </span>
+                  )}
                 </div>
-                <span>{formatTimestamp(activity?.timestamp)}</span>
-                {activity?.duration && (
-                  <span>Duration: {activity?.duration}</span>
-                )}
+                
+                <div className="flex items-center space-x-4 text-sm text-text-secondary">
+                  <div className="flex items-center space-x-2">
+                    <Icon name={getChannelIcon(activity?.channel)} size={14} />
+                    <span className="capitalize">{activity?.channel}</span>
+                  </div>
+                  <span>{formatTimestamp(activity?.timestamp)}</span>
+                  {activity?.duration && (
+                    <span>Duration: {activity?.duration}</span>
+                  )}
+                </div>
               </div>
             </div>
 

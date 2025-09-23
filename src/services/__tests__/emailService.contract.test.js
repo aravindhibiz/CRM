@@ -1,6 +1,15 @@
-import { describe, test, expect, beforeAll } from 'vitest';
+import { describe, test, expect, beforeAll, vi } from 'vitest';
 import emailService from '../emailService.js';
 import { createTestSupabaseClient, authenticateTestUser } from '../../test/integrationHelpers.js';
+
+// Mock axios to prevent real HTTP calls in tests
+vi.mock('axios', () => ({
+  default: {
+    post: vi.fn(() => Promise.resolve({
+      data: { success: true, message: 'Email sent successfully (mocked)' }
+    }))
+  }
+}));
 
 describe('Email Service - Integration Contract Tests', () => {
   let testClient;

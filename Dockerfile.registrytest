@@ -1,0 +1,12 @@
+# Minimal image to diagnose Heroku registry 'unsupported' manifest issue
+# Goal: eliminate app-specific layers, BuildKit features, healthcheck, labels
+FROM alpine:3.19
+
+# Explicitly set architecture expectation comment (linux/amd64 build)
+# No extra packages, no multi-stage, no healthcheck
+LABEL org.opencontainers.image.title="heroku-registry-test" \
+      org.opencontainers.image.description="Tiny diagnostic image to test Heroku registry acceptance" \
+      org.opencontainers.image.source="local"
+
+# Simple command (container will just exit). For push-only validation this is fine.
+CMD ["/bin/sh", "-c", "echo heroku registry minimal image OK"]

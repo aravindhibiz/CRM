@@ -10,6 +10,11 @@ export default defineConfig({
     setupFiles: ['./src/test/setup.js'],
     globals: true,
     css: true,
+    // Explicit include patterns for better UI discovery
+    include: [
+      'src/**/*.{test,spec}.{js,jsx,ts,tsx}',
+      'src/**/__tests__/**/*.{js,jsx,ts,tsx}'
+    ],
     exclude: [
       '**/node_modules/**',
       '**/dist/**',
@@ -20,6 +25,17 @@ export default defineConfig({
       // Exclude integration tests from default runs
       '**/*.contract.test.{js,jsx}',
       '**/*.integration.test.{js,jsx}'
+    ],
+    // UI-specific settings for better discovery
+    ui: {
+      open: false,
+      port: 51204
+    },
+    // Force file watching for better discovery
+    watchExclude: [
+      '**/node_modules/**', 
+      '**/dist/**',
+      '**/build/**'
     ],
     coverage: {
       reporter: ['text', 'json', 'html'],

@@ -59,5 +59,4 @@ ENV NODE_ENV=production
 ENV PORT=5000
 
 # Start the application
-ENTRYPOINT ["dumb-init", "--"]
-CMD ["node", "server.js"]
+CMD ["dumb-init", "--", "node", "server.js"]
